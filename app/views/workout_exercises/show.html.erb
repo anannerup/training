@@ -1,0 +1,19 @@
+<% content_for :title, @workout_exercise.exercise.name %>
+
+<h1><%= @workout_exercise.exercise.name %></h1>
+
+<div class="list" id="set_entries">
+  <div class="set-row set-row-header">
+    <div>Set</div>
+    <div>Weight</div>
+    <div>Reps</div>
+    <div></div>
+  </div>
+  <%= render @set_entries %>
+</div>
+
+<%= turbo_frame_tag "new_set_entry" do %>
+  <%= render "set_entries/form", workout_exercise: @workout_exercise, set_entry: @workout_exercise.set_entries.new %>
+<% end %>
+
+<p><%= link_to "Back to workout", workout_session_path(@workout_exercise.workout_session) %></p>

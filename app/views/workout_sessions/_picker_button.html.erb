@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "exercise_picker_#{exercise.id}" do %>
+  <% if workout_exercise %>
+    <%= button_to "Added — tap to remove", workout_exercise_path(workout_exercise), method: :delete, class: "picker-button added" %>
+  <% else %>
+    <%= button_to "Add", workout_session_workout_exercises_path(workout_session), params: { exercise_id: exercise.id }, class: "picker-button" %>
+  <% end %>
+<% end %>

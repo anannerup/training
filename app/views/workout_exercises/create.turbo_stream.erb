@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "exercise_picker_#{@exercise.id}" do %>
+  <%= render "workout_sessions/picker_button", workout_session: @workout_session, exercise: @exercise, workout_exercise: @workout_exercise %>
+<% end %>

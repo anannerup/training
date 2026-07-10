@@ -1,0 +1,7 @@
+<% content_for :title, "New exercise" %>
+
+<h1>New exercise</h1>
+
+<%= render "form", exercise: @exercise %>
+
+<p><%= link_to "Back to exercises", exercises_path %></p>

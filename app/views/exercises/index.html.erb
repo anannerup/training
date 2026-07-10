@@ -1,0 +1,29 @@
+<% content_for :title, "Exercises" %>
+
+<h1>Exercises</h1>
+
+<div class="actions-bar">
+  <%= link_to "New exercise", new_exercise_path, class: "btn btn-primary" %>
+</div>
+
+<% if @exercises.any? %>
+  <p class="hint">Drag the handle to change the default order — this is the order exercises show up in when you're building a workout.</p>
+
+  <div class="list" data-controller="sortable" data-sortable-url-value="<%= reorder_exercises_path %>">
+    <% @exercises.each do |exercise| %>
+      <div class="list-row" data-sortable-target="item" data-id="<%= exercise.id %>">
+        <span
+          class="drag-handle"
+          data-action="pointerdown->sortable#start pointermove->sortable#move pointerup->sortable#end pointercancel->sortable#end"
+        >⠿</span>
+        <div class="list-row-title"><%= exercise.name %></div>
+        <div>
+          <%= link_to "Edit", edit_exercise_path(exercise), class: "btn btn-ghost" %>
+          <%= button_to "Delete", exercise_path(exercise), method: :delete, class: "btn btn-ghost btn-danger", form: { data: { turbo_confirm: "Delete #{exercise.name}?" } } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty-state">No exercises yet — add your first one to get started.</div>
+<% end %>

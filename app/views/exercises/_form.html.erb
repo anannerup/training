@@ -1,0 +1,16 @@
+<%= form_with model: exercise do |form| %>
+  <% if exercise.errors.any? %>
+    <div class="form-errors">
+      <% exercise.errors.full_messages.each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, autofocus: true %>
+  </div>
+
+  <%= form.submit class: "btn btn-primary" %>
+<% end %>

@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "new_set_entry" do %>
+  <%= turbo_frame_tag "new_set_entry" do %>
+    <%= render "form", workout_exercise: @workout_exercise, set_entry: @set_entry %>
+  <% end %>
+<% end %>

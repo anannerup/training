@@ -1,0 +1,9 @@
+<%= turbo_frame_tag dom_id(set_entry), class: "list-row set-row" do %>
+  <div><%= set_entry.set_number %></div>
+  <div><%= set_entry.formatted_weight %></div>
+  <div><%= set_entry.reps %></div>
+  <div class="set-row-actions">
+    <%= link_to "Edit", edit_set_entry_path(set_entry), class: "btn btn-ghost" %>
+    <%= button_to "Delete", set_entry_path(set_entry), method: :delete, class: "btn btn-ghost btn-danger" %>
+  </div>
+<% end %>

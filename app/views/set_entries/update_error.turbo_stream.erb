@@ -1,0 +1,5 @@
+<%= turbo_stream.replace dom_id(@set_entry) do %>
+  <%= turbo_frame_tag dom_id(@set_entry), class: "list-row" do %>
+    <%= render "edit_form", workout_exercise: @workout_exercise, set_entry: @set_entry %>
+  <% end %>
+<% end %>

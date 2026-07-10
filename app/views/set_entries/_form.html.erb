@@ -1,0 +1,14 @@
+<%= form_with model: set_entry, url: workout_exercise_set_entries_path(workout_exercise), class: "set-entry-form" do |form| %>
+  <% if set_entry.errors.any? %>
+    <div class="form-errors" style="grid-column: 1 / -1"><%= set_entry.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <div class="field">
+    <%= form.label :weight %>
+    <%= form.number_field :weight, step: 0.5, min: 0, required: true, autofocus: true %>
+  </div>
+  <div class="field">
+    <%= form.label :reps %>
+    <%= form.number_field :reps, step: 1, min: 1, required: true %>
+  </div>
+  <%= form.submit "Log set", class: "btn btn-primary" %>
+<% end %>

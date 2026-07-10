@@ -1,0 +1,14 @@
+<% content_for :title, "Add exercises" %>
+
+<h1>Add exercises</h1>
+
+<div class="list">
+  <% @exercises.each do |exercise| %>
+    <div class="list-row">
+      <div class="list-row-title"><%= exercise.name %></div>
+      <%= render "picker_button", workout_session: @workout_session, exercise: exercise, workout_exercise: @workout_exercises_by_exercise_id[exercise.id] %>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "Done — view workout", workout_session_path(@workout_session), class: "btn btn-primary btn-block" %>

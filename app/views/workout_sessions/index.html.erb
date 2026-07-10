@@ -1,0 +1,22 @@
+<% content_for :title, "Workouts" %>
+
+<h1>Workouts</h1>
+
+<div class="actions-bar">
+  <%= button_to "Start workout", workout_sessions_path, class: "btn btn-primary btn-block" %>
+</div>
+
+<% if @workout_sessions.any? %>
+  <div class="list">
+    <% @workout_sessions.each do |workout_session| %>
+      <div class="list-row">
+        <%= link_to workout_session_path(workout_session) do %>
+          <div class="list-row-title"><%= workout_session.created_at.strftime("%b %-d, %Y") %></div>
+          <div class="list-row-subtitle"><%= workout_session.created_at.strftime("%H:%M") %></div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty-state">No workouts logged yet.</div>
+<% end %>
