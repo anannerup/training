@@ -29,4 +29,20 @@ class WorkoutSessionsControllerTest < ActionDispatch::IntegrationTest
     get workout_session_path(workout_sessions(:two))
     assert_response :not_found
   end
+
+  test "destroy removes the workout session and its exercises and sets" do
+    workout_session = workout_sessions(:one)
+
+    assert_difference [ "WorkoutSession.count", "WorkoutExercise.count", "SetEntry.count" ], -1 do
+      delete workout_session_path(workout_session)
+    end
+    assert_redirected_to workout_sessions_path
+  end
+
+  test "cannot delete another user's workout session" do
+    assert_no_difference "WorkoutSession.count" do
+      delete workout_session_path(workout_sessions(:two))
+    end
+    assert_response :not_found
+  end
 end

@@ -1,40 +1,45 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Reorders sibling .list-row elements by dragging a handle, using Pointer
-// Events (not the HTML5 Drag and Drop API) so it works with touch as well as
-// a mouse. Persists the new order with a plain fetch — the one spot in this
-// app where a bit of JS is unavoidable, since reordering-by-drag has no
-// server-rendered equivalent.
+// Reorders sibling rows via native HTML5 drag-and-drop, the same technique
+// 37signals' Writebook uses for reordering pages — no Pointer Events, no
+// manual position tracking. The browser renders the drag ghost and handles
+// cursor tracking for free; we just move the real row into place whenever
+// the browser tells us it's being dragged over another row. Note: this only
+// fires from a touch gesture on iOS Safari 15+, not on Android — fine here
+// since this list is only ever reordered from an iPhone.
 export default class extends Controller {
   static targets = [ "item" ]
   static values = { url: String }
 
-  start(event) {
-    this.item = event.currentTarget.closest("[data-sortable-target='item']")
-    this.item.setPointerCapture(event.pointerId)
-    this.item.classList.add("dragging")
+  dragStart(event) {
+    this.dragging = event.currentTarget.closest("[data-sortable-target='item']")
+
+    const rect = this.dragging.getBoundingClientRect()
+    event.dataTransfer.effectAllowed = "move"
+    event.dataTransfer.setDragImage(this.dragging, event.clientX - rect.left, event.clientY - rect.top)
+
+    // Deferred a frame so the browser snapshots the drag image before we dim the source row.
+    requestAnimationFrame(() => this.dragging.classList.add("dragging"))
+  }
+
+  dragOver(event) {
+    event.preventDefault()
+    if (!this.dragging) return
+
+    const target = event.target.closest("[data-sortable-target='item']")
+    if (!target || target === this.dragging) return
+
+    const isBefore = this.itemTargets.indexOf(this.dragging) > this.itemTargets.indexOf(target)
+    isBefore ? target.before(this.dragging) : target.after(this.dragging)
+  }
+
+  drop(event) {
     event.preventDefault()
   }
 
-  move(event) {
-    if (!this.item) return
-    event.preventDefault()
-
-    const after = this.itemTargets
-      .filter((item) => item !== this.item)
-      .find((item) => event.clientY < item.getBoundingClientRect().top + item.getBoundingClientRect().height / 2)
-
-    if (after) {
-      this.item.parentNode.insertBefore(this.item, after)
-    } else {
-      this.item.parentNode.appendChild(this.item)
-    }
-  }
-
-  end(event) {
-    if (!this.item) return
-    this.item.classList.remove("dragging")
-    this.item = null
+  dragEnd() {
+    this.dragging?.classList.remove("dragging")
+    this.dragging = null
     this.persist()
   }
 

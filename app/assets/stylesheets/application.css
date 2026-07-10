@@ -276,7 +276,8 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   color: inherit;
 }
 
@@ -375,6 +376,5 @@ input:focus {
 }
 
 .list-row.dragging {
-  opacity: 0.6;
-  box-shadow: none;
+  opacity: 0.4;
 }

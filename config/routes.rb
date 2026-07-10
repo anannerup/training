@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     patch :reorder, on: :collection
   end
 
-  resources :workout_sessions, only: %i[index create show edit] do
+  resources :workout_sessions, only: %i[index create show edit destroy] do
     resources :workout_exercises, only: %i[create destroy], shallow: true
   end
 

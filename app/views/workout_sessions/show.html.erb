@@ -18,3 +18,4 @@
 <% end %>
 
 <%= link_to "Add more exercises", edit_workout_session_path(@workout_session), class: "btn" %>
+<%= button_to "Delete workout", workout_session_path(@workout_session), method: :delete, class: "btn btn-ghost btn-danger", form: { data: { turbo_confirm: "Delete this workout?" } } %>

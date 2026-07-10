@@ -14,6 +14,7 @@
           <div class="list-row-title"><%= workout_session.created_at.strftime("%b %-d, %Y") %></div>
           <div class="list-row-subtitle"><%= workout_session.created_at.strftime("%H:%M") %></div>
         <% end %>
+        <%= button_to "Delete", workout_session_path(workout_session), method: :delete, class: "btn btn-ghost btn-danger", form: { data: { turbo_confirm: "Delete this workout?" } } %>
       </div>
     <% end %>
   </div>

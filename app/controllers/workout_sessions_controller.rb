@@ -1,5 +1,5 @@
 class WorkoutSessionsController < ApplicationController
-  before_action :set_workout_session, only: %i[edit show]
+  before_action :set_workout_session, only: %i[edit show destroy]
 
   def index
     @workout_sessions = Current.user.workout_sessions.order(created_at: :desc)
@@ -17,6 +17,11 @@ class WorkoutSessionsController < ApplicationController
 
   def show
     @workout_exercises = @workout_session.workout_exercises.includes(:exercise, :set_entries)
+  end
+
+  def destroy
+    @workout_session.destroy
+    redirect_to workout_sessions_path, notice: "Workout deleted."
   end
 
   private
