@@ -4,7 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-This is a freshly generated Rails 8.1 application (`rails new` skeleton) — no domain models, controllers, or routes have been added yet. `config/routes.rb` only has the default health check route, `db/schema.rb` is empty, and `app/models`/`app/controllers` only contain the base classes. Treat architectural conventions here as "what Rails 8 defaults give you," not as established project patterns — there isn't yet a codebase-specific pattern to infer.
+This is a Rails 8.1 app: a personal workout tracker. See `README.md` for what the app does from a user's perspective. Authentication (`User`/`Session`, Rails' generated auth) gates everything behind login — there is no public signup flow, only `sessions`/`passwords` controllers.
+
+Domain models, in dependency order:
+- `Exercise` — the catalog of exercises (e.g. "Bench Press"). Has `default_selected` (pre-add this exercise to every new workout) and `uses_barbell` (start weight at `Exercise::BARBELL_WEIGHT`, 20kg, instead of 0). Ordered by a manually maintained `position` column, reordered via drag-and-drop (`PATCH /exercises/reorder`).
+- `WorkoutSession` — one logged workout, `belongs_to :user`. Created via `WorkoutSessionsController#create`, which auto-populates it with every `Exercise.default_selected`.
+- `WorkoutExercise` — join model between a `WorkoutSession` and an `Exercise` (unique per session), also positioned/orderable. `#default_next_weight` picks the pre-filled weight for the next set: last set logged this session, else the last set logged for that exercise in the user's most recent prior session, else the exercise's starting weight.
+- `SetEntry` — one logged set (`weight` + `reps`) on a `WorkoutExercise`, auto-numbered via `set_number`.
+
+Frontend notes specific to this app:
+- `app/javascript/controllers/plate_calculator_controller.js` — lets a user tap barbell-plate buttons to build up the weight field instead of typing, on the set-logging form.
+- `app/javascript/controllers/sortable_controller.js` — native HTML5 drag-and-drop reordering, used for the exercise list; deliberately touch-first (iOS Safari), not cross-platform.
+- Set logging (`set_entries`) is Turbo Stream-driven (`create`/`update`/`destroy.turbo_stream.erb`) for inline add/edit/remove without full page reloads.
 
 ## Commands
 

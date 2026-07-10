@@ -8,7 +8,12 @@
   </div>
   <div class="field">
     <%= form.label :reps %>
-    <%= form.number_field :reps, step: 1, min: 1, required: true %>
+    <div class="rep-buttons">
+      <% (1..12).each do |reps| %>
+        <%= form.radio_button :reps, reps, class: "rep-radio", required: reps == 1 %>
+        <%= form.label :reps, reps, value: reps, class: "btn rep-button" %>
+      <% end %>
+    </div>
   </div>
   <div class="set-row-actions">
     <%= form.submit "Save", class: "btn btn-primary" %>

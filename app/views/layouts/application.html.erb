@@ -47,5 +47,15 @@
 
         <%= yield %>
       </main>
+
+      <dialog id="turbo-confirm-dialog" class="confirm-dialog">
+        <form method="dialog">
+          <p id="turbo-confirm-message"></p>
+          <div class="confirm-dialog-actions">
+            <button type="submit" value="cancel" class="btn btn-ghost">Cancel</button>
+            <button type="submit" value="confirm" class="btn btn-danger" autofocus>Confirm</button>
+          </div>
+        </form>
+      </dialog>
     </body>
 </html>

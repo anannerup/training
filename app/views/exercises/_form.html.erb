@@ -12,5 +12,15 @@
     <%= form.text_field :name, autofocus: true %>
   </div>
 
+  <div class="field checkbox-field">
+    <%= form.check_box :default_selected %>
+    <%= form.label :default_selected, "Include by default when starting a new workout" %>
+  </div>
+
+  <div class="field checkbox-field">
+    <%= form.check_box :uses_barbell %>
+    <%= form.label :uses_barbell, "Uses a barbell (starts sets at the #{Exercise::BARBELL_WEIGHT}kg bar weight)" %>
+  </div>
+
   <%= form.submit class: "btn btn-primary" %>
 <% end %>

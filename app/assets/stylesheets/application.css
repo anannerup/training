@@ -326,10 +326,9 @@ input:focus {
 }
 
 .set-entry-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
-  align-items: end;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -340,6 +339,53 @@ input:focus {
 
 .set-entry-form .field {
   margin-bottom: 0;
+}
+
+.plate-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.plate-button {
+  flex: 1;
+  min-width: 3.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.25rem;
+}
+
+.plate-reset {
+  flex-basis: 100%;
+}
+
+/* Rep picker: hidden radios + labels styled as buttons, no JS needed */
+
+.rep-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.rep-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rep-button {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.25rem;
+}
+
+.rep-radio:checked + .rep-button {
+  background: var(--success-bg);
+  border-color: var(--success-text);
+  color: var(--success-text);
+}
+
+.rep-radio:focus-visible + .rep-button {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 /* Exercise picker */
@@ -377,4 +423,64 @@ input:focus {
 
 .list-row.dragging {
   opacity: 0.4;
+}
+
+/* Confirm dialog (replaces the browser's native confirm() for data-turbo-confirm) */
+
+.confirm-dialog {
+  border: none;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  max-width: 24rem;
+  width: calc(100% - 2rem);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 20px 40px rgba(16, 24, 40, 0.35);
+}
+
+.confirm-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.confirm-dialog p {
+  margin: 0 0 1.25rem;
+  font-size: 1rem;
+}
+
+.confirm-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.checkbox-field label {
+  display: inline;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  padding: 0.0625rem 0.5rem;
+  margin-left: 0.5rem;
 }

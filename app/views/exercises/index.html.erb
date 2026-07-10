@@ -22,7 +22,15 @@
           draggable="true"
           data-action="dragstart->sortable#dragStart dragend->sortable#dragEnd"
         >⠿</span>
-        <div class="list-row-title"><%= exercise.name %></div>
+        <div class="list-row-title">
+          <%= exercise.name %>
+          <% if exercise.default_selected? %>
+            <span class="badge">Default</span>
+          <% end %>
+          <% if exercise.uses_barbell? %>
+            <span class="badge">Barbell</span>
+          <% end %>
+        </div>
         <div>
           <%= link_to "Edit", edit_exercise_path(exercise), class: "btn btn-ghost" %>
           <%= button_to "Delete", exercise_path(exercise), method: :delete, class: "btn btn-ghost btn-danger", form: { data: { turbo_confirm: "Delete #{exercise.name}?" } } %>

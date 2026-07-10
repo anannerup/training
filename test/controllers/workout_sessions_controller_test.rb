@@ -15,6 +15,22 @@ class WorkoutSessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_workout_session_path(WorkoutSession.last)
   end
 
+  test "create automatically adds default-selected exercises" do
+    default_exercise = Exercise.create!(name: "Deadlift", default_selected: true)
+
+    post workout_sessions_path
+
+    workout_session = WorkoutSession.last
+    assert_includes workout_session.exercises, default_exercise
+  end
+
+  test "create does not add exercises that aren't default selected" do
+    post workout_sessions_path
+
+    workout_session = WorkoutSession.last
+    assert_not_includes workout_session.exercises, exercises(:one)
+  end
+
   test "edit lists all exercises" do
     get edit_workout_session_path(workout_sessions(:one))
     assert_response :success

@@ -7,6 +7,11 @@ class WorkoutSessionsController < ApplicationController
 
   def create
     @workout_session = Current.user.workout_sessions.create!
+
+    Exercise.default_selected.order(:position).each do |exercise|
+      @workout_session.workout_exercises.create!(exercise: exercise)
+    end
+
     redirect_to edit_workout_session_path(@workout_session)
   end
 

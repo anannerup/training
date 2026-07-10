@@ -13,7 +13,7 @@
 </div>
 
 <%= turbo_frame_tag "new_set_entry" do %>
-  <%= render "set_entries/form", workout_exercise: @workout_exercise, set_entry: @workout_exercise.set_entries.new %>
+  <%= render "set_entries/form", workout_exercise: @workout_exercise, set_entry: @workout_exercise.new_set_entry %>
 <% end %>
 
 <p><%= link_to "Back to workout", workout_session_path(@workout_exercise.workout_session) %></p>

@@ -1,14 +1,29 @@
-<%= form_with model: set_entry, url: workout_exercise_set_entries_path(workout_exercise), class: "set-entry-form" do |form| %>
+<%= form_with model: set_entry, url: workout_exercise_set_entries_path(workout_exercise), class: "set-entry-form", data: { controller: "plate-calculator" } do |form| %>
   <% if set_entry.errors.any? %>
-    <div class="form-errors" style="grid-column: 1 / -1"><%= set_entry.errors.full_messages.to_sentence %></div>
+    <div class="form-errors"><%= set_entry.errors.full_messages.to_sentence %></div>
   <% end %>
+
   <div class="field">
     <%= form.label :weight %>
-    <%= form.number_field :weight, step: 0.5, min: 0, required: true, autofocus: true %>
+    <%= form.number_field :weight, step: 0.5, min: 0, required: true, data: { plate_calculator_target: "input" } %>
   </div>
+
+  <div class="plate-buttons">
+    <% [ 1.25, 2.5, 5, 10, 20 ].each do |plate| %>
+      <button type="button" class="btn plate-button" data-action="click->plate-calculator#add" data-plate-calculator-amount-param="<%= plate %>">+<%= plate %></button>
+    <% end %>
+    <button type="button" class="btn btn-ghost plate-reset" data-action="click->plate-calculator#reset">Reset</button>
+  </div>
+
   <div class="field">
     <%= form.label :reps %>
-    <%= form.number_field :reps, step: 1, min: 1, required: true %>
+    <div class="rep-buttons">
+      <% (1..12).each do |reps| %>
+        <%= form.radio_button :reps, reps, class: "rep-radio", required: reps == 1, autofocus: reps == 1 %>
+        <%= form.label :reps, reps, value: reps, class: "btn rep-button" %>
+      <% end %>
+    </div>
   </div>
+
   <%= form.submit "Log set", class: "btn btn-primary" %>
 <% end %>

@@ -52,6 +52,6 @@ class ExercisesController < ApplicationController
     end
 
     def exercise_params
-      params.expect(exercise: [ :name ])
+      params.expect(exercise: [ :name, :default_selected, :uses_barbell ])
     end
 end

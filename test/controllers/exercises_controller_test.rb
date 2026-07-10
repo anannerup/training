@@ -43,6 +43,21 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to exercises_path
   end
 
+  test "create can mark an exercise as default selected" do
+    post exercises_path, params: { exercise: { name: "Deadlift", default_selected: "1" } }
+    assert Exercise.find_by(name: "Deadlift").default_selected?
+  end
+
+  test "update can toggle default selected" do
+    patch exercise_path(exercises(:one)), params: { exercise: { name: exercises(:one).name, default_selected: "1" } }
+    assert exercises(:one).reload.default_selected?
+  end
+
+  test "create can mark an exercise as using a barbell" do
+    post exercises_path, params: { exercise: { name: "Deadlift", uses_barbell: "1" } }
+    assert Exercise.find_by(name: "Deadlift").uses_barbell?
+  end
+
   test "reorder updates positions to match the given order" do
     patch reorder_exercises_path, params: { ids: [ exercises(:two).id, exercises(:one).id ] }, as: :json
     assert_response :success
