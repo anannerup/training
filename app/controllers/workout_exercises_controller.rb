@@ -1,5 +1,5 @@
 class WorkoutExercisesController < ApplicationController
-  before_action :set_workout_session, only: :create
+  before_action :set_workout_session, only: %i[create reorder]
   before_action :set_workout_exercise, only: %i[destroy show]
 
   def create
@@ -15,6 +15,14 @@ class WorkoutExercisesController < ApplicationController
 
   def show
     @set_entries = @workout_exercise.set_entries
+  end
+
+  def reorder
+    params.expect(ids: []).each_with_index do |id, index|
+      @workout_session.workout_exercises.where(id: id).update_all(position: index + 1)
+    end
+
+    head :ok
   end
 
   private
