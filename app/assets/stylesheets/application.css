@@ -347,6 +347,12 @@ input:focus {
   margin-bottom: 0;
 }
 
+/* Hide "add a set" while a set is being edited, so editing and adding can't
+ * happen at once. Reactive to Turbo Frame swaps with no JS needed. */
+#set_entries:has(.set-entry-form) ~ #new_set_entry {
+  display: none;
+}
+
 .plate-buttons {
   display: flex;
   flex-wrap: wrap;
