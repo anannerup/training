@@ -58,4 +58,14 @@ class WorkoutExerciseTest < ActiveSupport::TestCase
 
     assert_equal exercises(:two).starting_weight, workout_exercise.default_next_weight
   end
+
+  test "next_workout_exercise returns the following exercise in position order" do
+    second = workout_sessions(:one).workout_exercises.create!(exercise: exercises(:two))
+
+    assert_equal second, workout_exercises(:one).next_workout_exercise
+  end
+
+  test "next_workout_exercise returns nil for the last exercise in the session" do
+    assert_nil workout_exercises(:one).next_workout_exercise
+  end
 end

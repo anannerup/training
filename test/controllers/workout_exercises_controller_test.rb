@@ -29,6 +29,28 @@ class WorkoutExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show offers no next-exercise shortcut before any set is logged" do
+    workout_exercise = workout_sessions(:one).workout_exercises.create!(exercise: exercises(:two))
+
+    get workout_exercise_path(workout_exercise)
+
+    assert_select "#next_up a", false
+  end
+
+  test "show offers a shortcut to the next exercise once a set is logged" do
+    next_workout_exercise = workout_sessions(:one).workout_exercises.create!(exercise: exercises(:two))
+
+    get workout_exercise_path(workout_exercises(:one))
+
+    assert_select "#next_up a[href=?]", workout_exercise_path(next_workout_exercise)
+  end
+
+  test "show offers to finish the workout once the last exercise's set is logged" do
+    get workout_exercise_path(workout_exercises(:one))
+
+    assert_select "#next_up a[href=?]", workout_session_path(workout_sessions(:one)), text: "Finish workout"
+  end
+
   test "cannot manage another user's workout exercise" do
     get workout_exercise_path(workout_exercises(:two))
     assert_response :not_found

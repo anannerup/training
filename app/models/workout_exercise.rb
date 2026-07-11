@@ -27,6 +27,10 @@ class WorkoutExercise < ApplicationRecord
     set_entries.new(weight: default_next_weight)
   end
 
+  def next_workout_exercise
+    workout_session.workout_exercises.where("position > ?", position).first
+  end
+
   private
     def assign_position
       self.position ||= workout_session.workout_exercises.maximum(:position).to_i + 1

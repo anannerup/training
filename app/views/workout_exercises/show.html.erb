@@ -10,4 +10,6 @@
   <%= render "set_entries/form", workout_exercise: @workout_exercise, set_entry: @workout_exercise.new_set_entry %>
 <% end %>
 
+<%= render "next_up", workout_exercise: @workout_exercise %>
+
 <p><%= link_to "Back to workout", workout_session_path(@workout_exercise.workout_session) %></p>

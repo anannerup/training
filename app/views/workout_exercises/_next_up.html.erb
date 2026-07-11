@@ -1,0 +1,9 @@
+<div id="next_up">
+  <% if workout_exercise.set_entries.exists? %>
+    <% if (next_workout_exercise = workout_exercise.next_workout_exercise) %>
+      <%= link_to "Next: #{next_workout_exercise.exercise.name} →", workout_exercise_path(next_workout_exercise), class: "btn btn-primary" %>
+    <% else %>
+      <%= link_to "Finish workout", workout_session_path(workout_exercise.workout_session), class: "btn btn-primary" %>
+    <% end %>
+  <% end %>
+</div>

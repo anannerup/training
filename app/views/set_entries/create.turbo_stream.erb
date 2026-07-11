@@ -4,3 +4,6 @@
     <%= render "form", workout_exercise: @workout_exercise, set_entry: @workout_exercise.new_set_entry %>
   <% end %>
 <% end %>
+<%= turbo_stream.replace "next_up" do %>
+  <%= render "workout_exercises/next_up", workout_exercise: @workout_exercise %>
+<% end %>

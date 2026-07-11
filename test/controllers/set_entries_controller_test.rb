@@ -10,6 +10,20 @@ class SetEntriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "create reveals the next-exercise shortcut once the first set is logged" do
+    workout_exercise = workout_sessions(:one).workout_exercises.create!(exercise: exercises(:two))
+
+    post workout_exercise_set_entries_path(workout_exercise), params: { set_entry: { weight: 60, reps: 6 } }, as: :turbo_stream
+
+    assert_select "turbo-stream[action=replace][target=next_up] a", text: "Finish workout"
+  end
+
+  test "destroy hides the next-exercise shortcut when the last set is removed" do
+    delete set_entry_path(set_entries(:one)), as: :turbo_stream
+
+    assert_select "turbo-stream[action=replace][target=next_up] a", false
+  end
+
   test "create with invalid params does not log a set" do
     assert_no_difference -> { workout_exercises(:one).set_entries.count } do
       post workout_exercise_set_entries_path(workout_exercises(:one)), params: { set_entry: { weight: 60, reps: 0 } }, as: :turbo_stream
