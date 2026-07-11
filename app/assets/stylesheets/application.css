@@ -311,14 +311,6 @@ input:focus {
   gap: 0.75rem;
 }
 
-.set-row-header {
-  color: var(--muted);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0 1rem;
-}
-
 .set-row form {
   display: inline;
 }
