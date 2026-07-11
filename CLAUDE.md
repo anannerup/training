@@ -69,6 +69,12 @@ bin/importmap audit
 
 Rails console / generators / migrations — use `bin/rails` as the entry point (`bin/rails console`, `bin/rails generate ...`, `bin/rails db:migrate`), not a bare `rails` or `rake`.
 
+Deploy to production:
+```
+bin/kamal deploy
+```
+Kamal tags the built image by git commit SHA, so uncommitted changes won't ship — commit first. Use `bin/kamal setup` instead only when provisioning a brand-new server (installs Docker/kamal-proxy, then deploys); `deploy` assumes that's already done.
+
 ## Architecture
 
 - **Database**: SQLite via the `sqlite3` gem, one database per Rails 8 "Solid" component: `storage/development.sqlite3` (primary) plus separate databases for `solid_cache`, `solid_queue`, and `solid_cable` in production (see `config/database.yml`). Each has its own migration path (`db/cache_migrate`, `db/queue_migrate`, `db/cable_migrate`) — migrations for these live outside the main `db/migrate`.
@@ -76,5 +82,5 @@ Rails console / generators / migrations — use `bin/rails` as the entry point (
 - **Caching / Action Cable**: also DB-backed via `solid_cache` / `solid_cable` — no Redis/Memcached required for a base install.
 - **Frontend**: Hotwire stack — `turbo-rails` + `stimulus-rails` with `importmap-rails` for JS (no Node/webpack build step; JS controllers live in `app/javascript/controllers`). Assets are served through `propshaft`, not Sprockets. Prefer plain HTML/CSS (server-rendered forms, `:checked`-sibling styling, native form controls) over a Stimulus controller whenever the interaction can be expressed that way — reach for JS only when there's no HTML-native option. Matches the DHH/Rails 8 "HTML-over-the-wire" philosophy; see the rep-picker in `set_entries` (hidden radios + labels, no JS) as the reference pattern.
 - **Views**: standard ERB in `app/views`; `jbuilder` is available for JSON API responses.
-- **Deployment**: Dockerized via the generated `Dockerfile`, deployed with `kamal` (config in `.kamal/`, `config/deploy.yml` when added). `thruster` sits in front of Puma in production for HTTP asset caching/compression.
+- **Deployment**: Dockerized via the generated `Dockerfile`, deployed with `kamal` (config in `.kamal/`, `config/deploy.yml`) to a single OVH VPS over SSH. `thruster` sits in front of Puma in production for HTTP asset caching/compression.
 - **CI** (`.github/workflows/ci.yml`) runs four independent jobs on every PR/push to `main`: `scan_ruby` (brakeman + bundler-audit), `scan_js` (importmap audit), `lint` (rubocop), `test`, and `system-test`. Match these when validating changes locally before pushing.

@@ -14,6 +14,11 @@ CI.run do
   # Optional: Run system tests
   # step "Tests: System", "bin/rails test:system"
 
+  # Build & deploy main. `kamal deploy` builds the Docker image, pushes it, and deploys in one step.
+  if success? && `git rev-parse --abbrev-ref HEAD`.strip == "main"
+    step "Deploy: main (Docker build + Kamal deploy)", "bin/kamal deploy"
+  end
+
   # Optional: set a green GitHub commit status to unblock PR merge.
   # Requires the `gh` CLI and `gh extension install basecamp/gh-signoff`.
   # if success?
