@@ -1,6 +1,6 @@
 <% content_for :title, "Workout" %>
 
-<h1>Workout — <%= @workout_session.created_at.strftime("%b %-d, %Y") %></h1>
+<h1>Workout — <%= @workout_session.created_at.in_time_zone(Current.user.time_zone).strftime("%b %-d, %Y") %></h1>
 
 <% if @workout_exercises.any? %>
   <p class="hint">Drag the handle to reorder exercises for this workout.</p>

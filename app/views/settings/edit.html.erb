@@ -1,0 +1,79 @@
+<% content_for :title, "Settings" %>
+
+<h1>Settings</h1>
+<p class="section-subtitle">Manage your account and how the app behaves for you.</p>
+
+<div class="settings-section">
+  <h2>Profile</h2>
+  <p class="section-subtitle">The email address you sign in with.</p>
+
+  <%= form_with model: Current.user, url: profile_settings_path, method: :patch do |form| %>
+    <% if Current.user.errors.full_messages_for(:email_address).any? %>
+      <div class="form-errors">
+        <% Current.user.errors.full_messages_for(:email_address).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :email_address %>
+      <%= form.email_field :email_address, required: true, autocomplete: "username" %>
+    </div>
+
+    <%= form.submit "Save email", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class="settings-section">
+  <h2>Password</h2>
+  <p class="section-subtitle">You'll need your current password to set a new one.</p>
+
+  <% password_errors = %i[current_password password password_confirmation].flat_map { |attr| Current.user.errors.full_messages_for(attr) } %>
+  <%= form_with scope: :user, url: password_settings_path, method: :patch do |form| %>
+    <% if password_errors.any? %>
+      <div class="form-errors">
+        <% password_errors.each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :current_password %>
+      <%= form.password_field :current_password, required: true, autocomplete: "current-password" %>
+    </div>
+    <div class="field">
+      <%= form.label :password, "New password" %>
+      <%= form.password_field :password, required: true, autocomplete: "new-password", maxlength: 72 %>
+    </div>
+    <div class="field">
+      <%= form.label :password_confirmation, "Confirm new password" %>
+      <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", maxlength: 72 %>
+    </div>
+
+    <%= form.submit "Change password", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class="settings-section">
+  <h2>Preferences</h2>
+  <p class="section-subtitle">Times across the app are shown in this time zone.</p>
+
+  <%= form_with model: Current.user, url: preferences_settings_path, method: :patch do |form| %>
+    <% if Current.user.errors.full_messages_for(:time_zone).any? %>
+      <div class="form-errors">
+        <% Current.user.errors.full_messages_for(:time_zone).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :time_zone %>
+      <%= form.time_zone_select :time_zone %>
+    </div>
+
+    <%= form.submit "Save time zone", class: "btn btn-primary" %>
+  <% end %>
+</div>

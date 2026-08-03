@@ -213,7 +213,8 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="password"],
-input[type="number"] {
+input[type="number"],
+select {
   width: 100%;
   min-height: 2.75rem;
   padding: 0.5rem 0.75rem;
@@ -224,7 +225,8 @@ input[type="number"] {
   font-size: 1rem;
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: 2px solid var(--primary);
   outline-offset: 1px;
 }
@@ -474,6 +476,28 @@ input:focus {
   font-weight: 400;
   color: var(--text);
   margin-bottom: 0;
+}
+
+/* Settings page */
+
+.settings-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.settings-section h2 {
+  font-size: 1.0625rem;
+  margin: 0 0 0.25rem;
+}
+
+.section-subtitle {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin: 0 0 1rem;
 }
 
 .badge {

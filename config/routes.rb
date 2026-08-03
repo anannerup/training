@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
+  resource :settings, only: :edit do
+    patch :profile
+    patch :password
+    patch :preferences
+  end
 
   resources :exercises, except: :show do
     patch :reorder, on: :collection
